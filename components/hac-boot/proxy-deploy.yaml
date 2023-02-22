@@ -51,7 +51,7 @@ spec:
             secretKeyRef:
               key: proxyssl
               name: hac-proxy
-        image: quay.io/jduimovich0/hac-proxy
+        image: quay.io/jduimovich0/crc-k8s-proxy
         imagePullPolicy: Always
         name: hac-proxy
         ports:
