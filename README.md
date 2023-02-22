@@ -10,8 +10,8 @@ You will need a stanalone cluster (clusterbot or a large CRC) with kubeadmin
 1. Pre-Install infra-deployments https://github.com/redhat-appstudio/infra-deployments and wait til completion
 2. Create a fork of this repo and clone it. This is required so that the scripts can customize the installation.
 3. Set the SOUP_HOSTNAME variable for your cluster eg `export SOUP_HOSTNAME=cluster-hostname` This is required so that the routes to the hac frontends are based on the correct hostname. 
-4. Secrets and config - You will need to create a directory `hack/commit`  (copy `./hack/no-commit-templates`).
-You need credentials from your quay.io account in the correct formats and place these in the `commit` directory.
+4. Secrets and config - You will need to create a directory `hack/nocommit`  (copy `./hack/no-commit-templates`).
+You need credentials from your quay.io account in the correct formats and place these in the `nocommit` directory.
 4. Run `./hack/install.sh` and it will install clowder, the ArgoCD applications for HAC. 
 
 Note, the install will always install from a preview- branch.
