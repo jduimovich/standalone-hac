@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    haproxy.router.openshift.io/rewrite-target: /
+    route.openshift.io/termination: reencrypt
+  labels:
+    frontend: hac-proxy
+  name: hac-proxy
+spec:
+  ingressClassName: openshift-default
+  rules:
+  - host: env-boot-local-127-0-0-1.nip.io
+    http:
+      paths:
+      - backend:
+          service:
+            name: hac-proxy
+            port:
+              number: 8000
+        path: /api/k8s
+        pathType: Prefix
+  tls:
+  - {}

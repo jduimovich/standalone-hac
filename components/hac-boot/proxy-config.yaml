@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: hac-proxy
+stringData:
+  k8surl: http://api.toolchain-host-operator.svc.cluster.local
+  keycloak: http://keycloak-svc.dev-sso.svc:8080/auth/realms/redhat-external
+  mode: simple
+  proxyssl: "false"
+  ssl: "true"
+  token: passed-via-toolchain-jwt
+type: Opaque

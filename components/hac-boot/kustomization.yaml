@@ -4,6 +4,11 @@ resources:
 - hac-core.yaml
 - hac-dev.yaml 
 - hac-nav.yaml 
+- proxy-config.yaml
+- proxy-service.yaml
+- proxy-deploy.yaml
+- proxy-ingress.yaml
+
   
 
 generatorOptions:
