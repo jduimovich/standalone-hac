@@ -3,8 +3,8 @@ SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"/..
 PROXY=$ROOT/../crc-k8s-proxy 
 
-echo "Proxy no longer installed separately" 
-exit 0
+# echo "Proxy no longer installed separately" 
+# exit 0
 
 if [ -d $PROXY ]; then
   (cd $PROXY; bash run-util crc)
