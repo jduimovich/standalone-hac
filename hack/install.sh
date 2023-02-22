@@ -13,7 +13,14 @@ fi
 export KUBECTL_CMD=kubectl
 $SCRIPTDIR/install_clowder.sh  
 $SCRIPTDIR/preview.sh  
-$SCRIPTDIR/install_proxy.sh  
-   
-echo "This install will be at https:/$SOUP_HOSTNAME/hac/stonesoup"  
+
+echo "Note - Proxy no longer installed separately" 
+echo "Cleaning up old crc-k8s-proxy elements if present " 
+kubectl delete secret crc-k8s-proxy -n boot 2&1> /dev/null
+kubectl delete ingress crc-k8s-proxy -n boot boot 2&1> /dev/null
+kubectl delete service crc-k8s-proxy -n boot boot 2&1> /dev/null
+kubectl delete deployment crc-k8s-proxy -n boot 2&1> /dev/null
+
+echo  
+echo "Find your soup at https:/$SOUP_HOSTNAME/hac/stonesoup"  
   
