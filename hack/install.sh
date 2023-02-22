@@ -17,8 +17,8 @@ $SCRIPTDIR/preview.sh
 echo "Note - Proxy no longer installed separately" 
 echo "Cleaning up old crc-k8s-proxy elements if present " 
 kubectl delete secret crc-k8s-proxy -n boot 2>&1 /dev/null
-kubectl delete ingress crc-k8s-proxy -n boot boot 2>&1 /dev/null
-kubectl delete service crc-k8s-proxy -n boot boot 2>&1 /dev/null
+kubectl delete ingress crc-k8s-proxy -n boot  2>&1 /dev/null
+kubectl delete service crc-k8s-proxy -n boot  2>&1 /dev/null
 kubectl delete deployment crc-k8s-proxy -n boot 2>&1 /dev/null
 
 echo  
