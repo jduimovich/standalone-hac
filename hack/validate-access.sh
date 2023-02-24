@@ -4,7 +4,7 @@ set -o pipefail
 # call this script prior to validate the configuration 
 # for new things, place in this script
 # this script must be run as source validate-access.sh as it will set and configure
-# automatic shell vars (USER_NS, SOUP_HOSTNAME)
+# automatic shell vars (SOUP_USER, SOUP_USER_NS, SOUP_HOSTNAME)
 
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"  
 ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"/..
@@ -16,13 +16,14 @@ if [ "$(oc auth can-i '*' '*' --all-namespaces)" != "yes" ]; then
   exit 1
 fi
 
-USER=user1
-USER_NS=$USER-tenant
-oc get ns $USER_NS > /dev/null 2>&1
+# TODO: We can compute this user name  
+SOUP_USER=user1
+SOUP_USER_NS=$SOUP_USER-tenant
+oc get ns $SOUP_USER_NS > /dev/null 2>&1
 ERR=$? 
 if [ $ERR != 0 ] ; then
   echo 
-  echo "[ERROR] Missing $USER_NS, you need to goto the registration page and login."
+  echo "[ERROR] Missing $SOUP_USER_NS, you need to goto the registration page and login."
   echo "This will create the proper user and namespace for this install to continue."
   echo 
   echo "https://"$(kubectl get routes -n toolchain-host-operator registration-service -o jsonpath={.spec.host})
@@ -35,7 +36,7 @@ if [ $ERR != 0 ] ; then
   exit
 else  
   echo 
-  echo "[INFO] $USER and namespace $USER_NS" is present
+  echo "[INFO] $SOUP_USER and namespace $SOUP_USER_NS" is present
 fi   
 
 if [ -z "$SOUP_HOSTNAME" ]; then

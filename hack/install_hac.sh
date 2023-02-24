@@ -40,7 +40,7 @@ yq '.spec.source.path="'$REPO_PATH'"' $ROOT/argo-cd-apps/app-of-apps/all-applica
       kubectl apply -f -
 
 kubectl create secret docker-registry redhat-appstudio-staginguser-pull-secret --from-file=.dockerconfigjson="$ROOT/hack/nocommit/quay-io-auth.json" --dry-run=client -o yaml | \
-kubectl apply -f - -n user1-tenant
+kubectl apply -f - -n $SOUP_USER_NS
 oc secrets link pipeline redhat-appstudio-staginguser-pull-secret --for=pull,mount
 # switch to the correct single namespace 
-oc project user1-tenant
+oc project $SOUP_USER_NS

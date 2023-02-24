@@ -57,5 +57,5 @@ done
 wait 
    
 echo  
-echo "Find your soup at https://$SOUP_HOSTNAME/hac/stonesoup"  
+echo "You are $SOUP_USER, find your soup at https://$SOUP_HOSTNAME/hac/stonesoup"   
 echo  
