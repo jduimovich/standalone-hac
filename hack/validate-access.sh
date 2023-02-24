@@ -17,8 +17,8 @@ if [ "$(oc auth can-i '*' '*' --all-namespaces)" != "yes" ]; then
 fi
 
 # TODO: We can compute this user name  
-SOUP_USER=user1
-SOUP_USER_NS=$SOUP_USER-tenant
+export SOUP_USER=user1
+export SOUP_USER_NS=$SOUP_USER-tenant
 oc get ns $SOUP_USER_NS > /dev/null 2>&1
 ERR=$? 
 if [ $ERR != 0 ] ; then

@@ -14,7 +14,8 @@ You will need a standalone cluster (clusterbot or a large CRC) with kubeadmin
  `echo "https://"$(kubectl get routes -n toolchain-host-operator registration-service -o jsonpath={.spec.host})`
 
 * Create a fork of this repo and clone it. This is required so that the scripts can customize the installation.
-* Set the SOUP_HOSTNAME variable for your cluster eg `export SOUP_HOSTNAME=cluster-hostname` This is required so that the routes to the hac frontends are based on the correct hostname.
+* OPTIONAL - Set the SOUP_HOSTNAME variable for your cluster eg `export SOUP_HOSTNAME=cluster-hostname` This will point the routes for the hac frontends to this hostname.
+The code will try to compute and validate the reachability of a generated hostname for Stone Soup. You should not have to set this variable in most situations.
 * Secrets and config - You will need to create a directory `hack/nocommit`  (copy `./hack/no-commit-templates`).
 You need credentials from your quay.io account in the correct formats and place these in the `nocommit` directory.
 * Run `./hack/install.sh` and it will install clowder, the ArgoCD applications for HAC.
