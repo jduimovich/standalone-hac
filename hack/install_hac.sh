@@ -35,6 +35,15 @@ yq '.spec.source.path="'$REPO_PATH'"' $ROOT/argo-cd-apps/app-of-apps/all-applica
       yq '.spec.source.targetRevision="'$REVISION'"' | \
       kubectl apply -f -
 
+
+echo "Note: Increasing the Quota for PVC to 100 (run more pipelines) and Routes to 32 (more applications)"
+oc patch ResourceQuota/storage -n $SOUP_USER_NS --type merge -p \
+  '{"spec":{"hard":{"count/persistentvolumeclaims": "100" }}}'
+oc patch clusterresourcequota/for-$SOUP_USER-routes --type merge -p  \
+  '{"spec":{"quota":{"hard":{"count/ingresses.extensions": "32" }}}}'
+oc patch clusterresourcequota/for-$SOUP_USER-routes --type merge -p  \
+  '{"spec":{"quota":{"hard":{"count/routes.route.openshift.io": "32" }}}}'
+  
 kubectl create secret docker-registry redhat-appstudio-staginguser-pull-secret --from-file=.dockerconfigjson="$ROOT/hack/nocommit/quay-io-auth.json" --dry-run=client -o yaml | \
 kubectl apply -f - -n $SOUP_USER_NS
 oc secrets link pipeline redhat-appstudio-staginguser-pull-secret --for=pull,mount
