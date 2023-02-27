@@ -31,7 +31,8 @@ if [ $ERR != 0 ] ; then
   echo "Tips: If you see errors on this page, you may be having CERT/TLS errors from untrusted servers."
   echo "Click on the following URL(s), and approve the access to the site"
   echo
-  echo "https://"$(kubectl get routes -n toolchain-host-operator registration-service -o jsonpath={.spec.host})"/landingpage.js"
+  echo "- https://"$(kubectl get routes -n toolchain-host-operator registration-service -o jsonpath={.spec.host})"/landingpage.js"
+  echo "- https://"$(kubectl get routes -n dev-sso keycloak -o jsonpath={.spec.host})"/auth/js/keycloak.js"
   echo 
   exit
 else  
