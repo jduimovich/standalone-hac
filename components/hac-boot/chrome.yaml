@@ -15,7 +15,7 @@ spec:
       - /
       - /config/chrome
   # testing, previous tag used was 4e0f158  - LIVE 
-  image: quay.io/cloudservices/insights-chrome-frontend:ff00b3f
+  image: quay.io/cloudservices/insights-chrome-frontend:956f6fd
   module:
     manifestLocation: "/apps/chrome/js/fed-mods.json"
     config:
