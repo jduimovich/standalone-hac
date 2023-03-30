@@ -4914,10 +4914,10 @@ items:
             periodSeconds: 10
           resources:
             limits:
-              cpu: 500m
-              memory: 1Gi
-            requests:
               cpu: 100m
+              memory: 500Mi
+            requests:
+              cpu: 10m
               memory: 500Mi
           securityContext:
             allowPrivilegeEscalation: false

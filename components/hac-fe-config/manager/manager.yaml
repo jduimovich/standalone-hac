@@ -43,11 +43,11 @@ spec:
             periodSeconds: 10
           resources:
             limits:
-              cpu: 200m
-              memory: 900Mi
-            requests:
               cpu: 100m
               memory: 500Mi
+            requests:
+              cpu: 10m
+              memory: 100Mi
           ports:
             - containerPort: 8080
               name: metrics
