@@ -3,6 +3,19 @@ ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"/..
 
 REGISTRY=quay.io
 
+# Default is no update of the files and no push
+# pass "update" to fix files, and "push" to fix and push fixes to current branch
+UPDATE=false
+PUSH=false
+if [ "$1" = "update" ]; then
+  UPDATE=true 
+fi
+if [ "$1" = "push" ]; then
+  UPDATE=true 
+  PUSH=true
+fi
+HAS_UPDATES=false
+
 function newestImageTag() {
     SPEC=$1
     FILE=$2
@@ -10,44 +23,57 @@ function newestImageTag() {
     BASE=$(echo $IMG | cut -d ":" -f 1)
     CURRENT_TAG=$(echo $IMG | cut -d ":" -f 2) 
     REPO=${BASE#"$REGISTRY/"} 
-
-    LAST_LINK= 
-    LINK="/v2/$REPO/tags/list?n=50"
-    COUNT=0 
-    while [[ $LINK != null ]]
+ 
+    LINK="/v2/$REPO/tags/list?n=50" 
+    # have to scan each page for latest tag, skip PRs
+    # keep track of the last non-pr tag as that will be the latest 
+    LATEST_TAG=FAIL
+    while [[ $LINK != "" ]]
     do
-      LAST_LINK=$LINK 
+      CURRENT_PAGE=$(curl -s "https://$REGISTRY$LINK" ) 
+      LEN=$(echo $CURRENT_PAGE | jq ".tags" | jq length) 
+      while true; do
+        let LEN-- 
+        TAG=$(echo $CURRENT_PAGE | jq -r ".tags[$LEN]")  
+        [[ $TAG = pr* ]] || break
+        #echo "Skipping PR images $TAG"
+      done   
+      if [ "$TAG" != "null" ] 
+      then 
+        LATEST_TAG=$TAG
+      fi   
       NEXTLINK=$(curl -X HEAD -I -s "https://$REGISTRY$LINK"  | grep -i "Link:") 
       LINK=$(echo $NEXTLINK |  sed -e 's/.*<\(.*\)>.*/\1/')  
-      if [[ $LINK == "" ]]
-      then 
-        LINK=$LAST_LINK
-        break
-      fi 
-      let COUNT++
-    done 
- 
-    LAST=$(curl -s "https://$REGISTRY$LINK" ) 
-    LEN=$(echo $LAST | jq ".tags" | jq length)
-    while true; do
-      let LEN-- 
-      TAG=$(echo $LAST | jq -r ".tags[$LEN]")  
-      [[ $TAG = pr* ]] || break
-     # echo "Skipping PR images $TAG"
-    done 
-
-    if [ "$CURRENT_TAG" != "$TAG" ] 
+    done    
+    if [ "$CURRENT_TAG" != "$LATEST_TAG" ] 
     then
-      printf "Needs update: %s/%s:%s  in file: %s (current is: %s) \n" $REGISTRY $REPO $TAG $FILE $CURRENT_TAG
-      FULL_IMAGE="$REGISTRY/$REPO:$TAG"
-      echo yq -i "$SPEC=\"$FULL_IMAGE\"" "$ROOT/$FILE"
+      FULL_IMAGE="$REGISTRY/$REPO:$LATEST_TAG"
+      if [ $UPDATE = "true" ]; then
+        printf "Update: %s/%s:%s  in file: %s (current is: %s) \n" $REGISTRY $REPO $LATEST_TAG $FILE $CURRENT_TAG
+        yq -i "$SPEC=\"$FULL_IMAGE\"" "$ROOT/$FILE"
+        HAS_UPDATES=true
+      else 
+        printf "Needs Update: %s/%s:%s  in file: %s (current is: %s) \n" $REGISTRY $REPO $LATEST_TAG $FILE $CURRENT_TAG 
+      fi 
     else 
-      printf "OK: %s/%s:%s\n" $REGISTRY $REPO $TAG
+      printf "OK: %s/%s:%s\n" $REGISTRY $REPO $CURRENT_TAG
     fi 
-} 
+}
 
-newestImageTag '.spec.image'  components/hac-boot/hac-core.yaml & 
-newestImageTag '.spec.image'  components/hac-boot/hac-dev.yaml  & 
-newestImageTag '.spec.image'  components/hac-boot/chrome.yaml  & 
-newestImageTag '.spec.template.spec.containers[].image'  components/hac-fe-config/manager/manager.yaml & 
+if [ $HAS_UPDATES = "true" ]; then
+    printf "Images have updates\n"
+    if [ $PUSH = "true" ]; then 
+      git add .
+      git commit -m "image updates"
+      git push  
+    else 
+      printf "Auto-push not set, pass push as param2\n" 
+    fi
+fi 
+
+newestImageTag '.spec.image'  components/hac-boot/hac-core.yaml   &
+newestImageTag '.spec.image'  components/hac-boot/hac-dev.yaml  &
+newestImageTag '.spec.image'  components/hac-boot/chrome.yaml    &
+newestImageTag '.spec.template.spec.containers[].image'  components/hac-fe-config/manager/manager.yaml  &
+
 wait 
