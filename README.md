@@ -19,7 +19,7 @@ If this is your first time installing infra-deployments, please read the install
   Tip: If you see errors on this page, you may be having CERT/TLS errors from untrusted servers.
   Run the following and click on the URL(s), and approve the access to the site. This may happen even if you've logged in before so check the links below if having registration issues. 
   
-  `echo  https://"$(kubectl get routes -n toolchain-host-operator registration-service -o jsonpath={.spec.host})"/landingpage.js"`
+  `echo  https://"$(kubectl get routes -n toolchain-host-operator registration-service -o jsonpath={.spec.host})"/landingpage.js`
   
   `echo  https://"$(kubectl get routes -n dev-sso keycloak -o jsonpath={.spec.host})"/auth/js/keycloak.js`
   
