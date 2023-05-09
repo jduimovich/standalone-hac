@@ -4892,7 +4892,7 @@ items:
                 key: log_group_name
                 name: cloudwatch
                 optional: true
-          image: quay.io/cloudservices/clowder:4e3dc71b
+          image: quay.io/cloudservices/clowder:13ab1f8d
           livenessProbe:
             httpGet:
               path: /healthz
