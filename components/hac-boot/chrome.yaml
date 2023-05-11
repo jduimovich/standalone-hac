@@ -13,9 +13,10 @@ spec:
   frontend:
     paths:
       - /
-      - /config/chrome
-  # testing, previous tag used was 4e0f158  - LIVE 
-  image: quay.io/cloudservices/insights-chrome-frontend:4119c4e
+      - /config/chrome 
+  image: quay.io/cloudservices/insights-chrome-frontend:66f54d5
+  # note the immediate successor image fails
+# FAIL image: quay.io/cloudservices/insights-chrome-frontend:f16205b
   module:
     manifestLocation: "/apps/chrome/js/fed-mods.json"
     config:
