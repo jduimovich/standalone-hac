@@ -15,8 +15,7 @@ spec:
       - /
       - /config/chrome 
   # note the immediate 66f54d5 works, but its immediate successor f16205b fails
-  image: quay.io/cloudservices/insights-chrome-frontend:66f54d5
-# FAIL image: quay.io/cloudservices/insights-chrome-frontend:f16205b
+  image: quay.io/cloudservices/insights-chrome-frontend:66f54d5 
   module:
     manifestLocation: "/apps/chrome/js/fed-mods.json"
     config:
