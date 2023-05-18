@@ -46,6 +46,6 @@ oc patch clusterresourcequota/for-$SOUP_USER-routes --type merge -p  \
   
 kubectl create secret docker-registry redhat-appstudio-staginguser-pull-secret --from-file=.dockerconfigjson="$ROOT/hack/nocommit/quay-io-auth.json" --dry-run=client -o yaml | \
 kubectl apply -f - -n $SOUP_USER_NS
-oc secrets link pipeline redhat-appstudio-staginguser-pull-secret --for=pull,mount
+oc secrets link appstudio-pipeline redhat-appstudio-staginguser-pull-secret --for=pull,mount
 # switch to the correct single namespace 
 oc project $SOUP_USER_NS
