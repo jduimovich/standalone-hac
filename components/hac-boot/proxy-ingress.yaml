@@ -10,22 +10,22 @@ metadata:
 spec:
   ingressClassName: openshift-default
   rules:
-  - host: env-boot-local-127-0-0-1.nip.io
-    http:
-      paths:
-      - backend:
-          service:
-            name: hac-proxy
-            port:
-              number: 8000
-        path: /api/k8s
-        pathType: Prefix
-      - backend:
-          service:
-            name: hac-proxy
-            port:
-              number: 8000
-        path: /wss/k8s
-        pathType: Prefix
+    - host: env-boot-local-127-0-0-1.nip.io
+      http:
+        paths:
+          - backend:
+              service:
+                name: hac-proxy
+                port:
+                  number: 8000
+            path: /api/k8s
+            pathType: Prefix
+          - backend:
+              service:
+                name: hac-proxy
+                port:
+                  number: 8000
+            path: /wss/k8s
+            pathType: Prefix
   tls:
-  - {}
+    - {}

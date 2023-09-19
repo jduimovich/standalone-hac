@@ -3,6 +3,7 @@ kind: FrontendEnvironment
 metadata:
   name: env-boot
 spec: 
+# Use hack/update-sso.sh to compute this for dev-sso auth domain 
   sso: "https://keycloak-dev-sso.apps-crc.testing/auth/" 
   ingressClass: openshift-default
   hostname: env-boot-local-127-0-0-1.nip.io
